@@ -1,8 +1,13 @@
 import * as request from "superagent";
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
+import * as example from "./example"
 
 export default {
+  data(){
+    return {
+    }
+  },
   mounted() {
     var c = <HTMLCanvasElement>document.getElementById("canvas");
     var ctx = <CanvasRenderingContext2D>c.getContext("2d");
@@ -26,7 +31,7 @@ export default {
 
     function line(x1: number, y1: number, x2: number, y2: number, option: LffOption, index: number) {
       if (option.lineRenderer) {
-        option.lineRenderer(x1, y1, x2, y2, index);
+        option.lineRenderer(ctx, round, count, x1, y1, x2, y2, index);
       } else {
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -85,45 +90,18 @@ export default {
 
     var fontdata: parser.Font[];
     var round = 0;
-    var blink = 0;
+    var count = 0;
     function update() {
+      round += 0.01;
+      count += 1;
       clear();
       if (fontdata) {
         var left = 20;
         var top = 20;
 
-        var customRenderer = function (x0: number, y0: number, x1: number, y1: number, index: number) {
-          var scale = 5;
-          var rad = index / 10;
-          var rad2 = (index + 1) / 10;
+        var customRenderer = example.custom1;
 
-          var PIPI = 2 * 3.14;
-
-          ctx.strokeStyle = "#999999";
-          ctx.fillStyle = "#FFFFFF";
-
-          ctx.beginPath();
-          var diff = Math.cos((rad + round) * PIPI) * scale;
-          var diff2 = Math.cos((rad2 + round) * PIPI) * scale;
-          ctx.moveTo(x0, y0 + diff);
-          ctx.lineTo(x1, y1 + diff2);
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.arc(x0, y0 + diff, (diff + 5) / 4, 0, Math.PI * 2, true);
-          ctx.fill();
-          round += 0.0001;
-        };
-
-        var customRenderer2 = function (x0: number, y0: number, x1: number, y1: number, index: number) {
-          if (blink % 3 === 0) {
-            ctx.strokeStyle = "#FFF";
-            ctx.beginPath();
-            ctx.moveTo(x0, y0);
-            ctx.lineTo(x1, y1);
-            ctx.stroke();
-          }
-        };
+        var customRenderer2 = example.custom2
         var size = 80;
 
         drawString(left, top, size, fontdata, "あいうえお", {
@@ -137,13 +115,12 @@ export default {
         });
       }
 
-      window.requestAnimationFrame(function () {
-        blink++;
+      window.requestAnimationFrame( ()=> {
         update();
       });
     }
 
-    request.get("kst32b.lff").end(function (err, data) {
+    request.get("kst32b.lff").end( (err, data) =>{
       fontdata = parser.parseLines(data.text.split("\n"));
       update();
     });
@@ -151,5 +128,5 @@ export default {
 };
 
 class LffOption {
-  lineRenderer: (x0: number, y0: number, x1: number, y1: number, index: number) => void;
+  lineRenderer: (ctx: CanvasRenderingContext2D, round: number, count: number, x0: number, y0: number, x1: number, y1: number, index: number) => void;
 }

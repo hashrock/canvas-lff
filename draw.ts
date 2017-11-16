@@ -32,7 +32,7 @@ export function line(ctx: CanvasRenderingContext2D, round: number, count: number
 
 export function drawChar(ctx: CanvasRenderingContext2D, round:number, count:number, x: number, y: number, size: number, fontdata: parser.Font[], str: string, option: LffOption) {
   let font;
-  for (const i = 0; i < fontdata.length; i++) {
+  for (let i = 0; i < fontdata.length; i++) {
     if (fontdata[i].letter === str) {
       font = fontdata[i];
       break;
@@ -66,7 +66,7 @@ export function drawString(ctx: CanvasRenderingContext2D, round: number, count: 
   option = option ? option : { lineRenderer: () => { } };
 
   let offset = 0;
-  for (const i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     const ch = str[i];
     drawChar(ctx, round, count, x + offset, y, ratio, fontdata, ch, option);
     if (str.match(/^(\w| |'|,|&)+$/)) {

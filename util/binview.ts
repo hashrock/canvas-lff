@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 
 const buf = fs.readFileSync(process.argv[2]);
 

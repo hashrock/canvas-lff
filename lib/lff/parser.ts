@@ -1,12 +1,12 @@
-import lff from "./line";
+import * as lff from "./line";
 
-function parseLines(lines){
-    const fonts = [];
-    let info = [];
+function parseLines(lines) {
+    const fonts: any[] = [];
+    let info: any[] = [];
     let letter = "";
     lines.forEach(item => {
-        if(item === ""){
-            if(letter !== ""){
+        if (item === "") {
+            if (letter !== "") {
                 fonts.push([
                     letter,
                     info
@@ -14,18 +14,18 @@ function parseLines(lines){
                 info = [];
                 letter = "";
             }
-        }else{
+        } else {
             const resultChar = lff.charNo(item);
-            if(resultChar){
+            if (resultChar) {
                 letter = resultChar;
             }
             const resultLine = lff.line(item);
-            if(resultLine){
+            if (resultLine) {
                 info.push(resultLine);
             }
         }
     })
-    
+
     return fonts;
 }
 

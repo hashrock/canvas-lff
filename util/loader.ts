@@ -1,11 +1,11 @@
-import fs from "fs";
+import * as fs from "fs";
 
 const inputFile = process.argv[2];
 
-var data = fs.readFileSync(inputFile, "utf-8");
+var dd = fs.readFileSync(inputFile, "utf-8");
 import p from "../lib/lff/parser";
 
-var data = p(data.split("\n"));
+var data = p(dd.split("\n"));
 console.log(data.length + "char parsed.");
 
 const buf = new Buffer(1000 * 1000 * 100);
@@ -28,7 +28,7 @@ function lim(val, limit){
 
 for (const font of data) {
     //文字の書き込み
-    const cp = font[0].codePointAt(0);
+    const cp = font[0].charCodeAt(0);
     buf.writeUInt16LE(cp, offset);
     console.log("@"+ font[0]);
     console.log("@@"+ cp);

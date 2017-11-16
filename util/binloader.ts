@@ -1,10 +1,10 @@
-import fs from "fs";
+import * as fs from "fs";
 
 const buf = fs.readFileSync(process.argv[2]);
 
 let offset = 0;
 while(offset < buf.length){
-    const chr = String.fromCodePoint(buf.readUInt16LE(offset));
+    const chr = String.fromCharCode(buf.readUInt16LE(offset));
     console.log("@"+ chr);
     offset += 2;
 

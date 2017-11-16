@@ -1,4 +1,3 @@
-import * as request from "superagent";
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
 import * as example from "./example"
@@ -8,7 +7,7 @@ export default {
     return {
     }
   },
-  mounted() {
+  async mounted() {
     var c = <HTMLCanvasElement>document.getElementById("canvas");
     var ctx = <CanvasRenderingContext2D>c.getContext("2d");
     var w = c.offsetWidth;
@@ -49,11 +48,10 @@ export default {
         update();
       });
     }
-
-    request.get("kst32b.lff").end( (err, data) =>{
-      fontdata = parser.parseLines(data.text.split("\n"));
-      update();
-    });
+    const response = await fetch("kst32b.lff");
+    const text = await response.text()
+    fontdata = parser.parseLines(text.split("\n"));
+    update();  
   }
 };
 

@@ -18,14 +18,14 @@ body {
 }
 </style>
 
-<script>
-import request from "superagent";
+<script lang="ts">
+import * as request from "superagent";
 import parser from "./lib/lff/parser";
 
 export default {
   mounted() {
-    var c = document.getElementById("canvas");
-    var ctx = c.getContext("2d");
+    var c = <HTMLCanvasElement>document.getElementById("canvas");
+    var ctx = <CanvasRenderingContext2D>c.getContext("2d");
     var w = c.offsetWidth;
     var h = c.offsetHeight;
 
@@ -170,3 +170,4 @@ export default {
   }
 };
 </script>
+

@@ -21,7 +21,6 @@ body {
 <script lang="ts">
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
-import * as example from "./example";
 import { clear, drawString } from "./lib/drawfont";
 export default {
   async mounted() {
@@ -45,40 +44,11 @@ export default {
         const left = 20;
         const top = 20;
 
-        const customRenderer = example.custom1;
-
-        const customRenderer2 = example.custom2;
         const size = 80;
 
-        drawString(ctx, round, count, left, top, size, fontdata, "あいうえお", {
-          lineRenderer: customRenderer
-        });
-        drawString(
-          ctx,
-          round,
-          count,
-          left,
-          top + size,
-          size,
-          fontdata,
-          "ABCDE123",
-          {
-            lineRenderer: customRenderer
-          }
-        );
-        drawString(
-          ctx,
-          round,
-          count,
-          left,
-          top + size * 2,
-          size / 2,
-          fontdata,
-          "漢字も描画可能",
-          {
-            lineRenderer: customRenderer2
-          }
-        );
+        drawString(ctx, left, top, size, fontdata, "あいうえお");
+        drawString(ctx, left, top + size, size, fontdata, "ABCDE123");
+        drawString(ctx, left, top + size * 2, size / 2, fontdata, "漢字も描画可能");
       }
 
       window.requestAnimationFrame(() => {

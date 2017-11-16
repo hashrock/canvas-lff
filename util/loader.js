@@ -1,21 +1,21 @@
-var fs = require("fs");
+import fs from "fs";
 
-var inputFile = process.argv[2];
+const inputFile = process.argv[2];
 
 var data = fs.readFileSync(inputFile, "utf-8");
-var p = require("../lib/lff/parser");
+import p from "../lib/lff/parser";
 
 var data = p(data.split("\n"));
 console.log(data.length + "char parsed.");
 
-var buf = new Buffer(1000 * 1000 * 100);
-var offset = 0;
+const buf = new Buffer(1000 * 1000 * 100);
+let offset = 0;
 
-var codemax = 0;
-var lengthmax = 0;
+let codemax = 0;
+let lengthmax = 0;
 
 function norm(str){
-    var f = parseFloat(str);
+    const f = parseFloat(str);
     return Math.round(256 * f / 10);
 }
 
@@ -26,10 +26,9 @@ function lim(val, limit){
     return val;
 }
 
-for(var i = 0; i < data.length; i++){
-    var font = data[i];
+for (const font of data) {
     //文字の書き込み
-    var cp = font[0].codePointAt(0)
+    const cp = font[0].codePointAt(0);
     buf.writeUInt16LE(cp, offset);
     console.log("@"+ font[0]);
     console.log("@@"+ cp);
@@ -39,17 +38,17 @@ for(var i = 0; i < data.length; i++){
     offset += 2;
 
     //ストロークの数
-    var strokeNum = font[1].length;
+    const strokeNum = font[1].length;
     buf.writeUInt16LE(strokeNum, offset);
     console.log(":"+ strokeNum);
     if(lengthmax < strokeNum){
         lengthmax = strokeNum;
     }
     offset += 2;
-    
+
     //ストローク（4つ一組）
-    for(var x = 0; x < strokeNum; x++){
-        var f = [
+    for(let x = 0; x < strokeNum; x++){
+        const f = [
             norm(font[1][x][0]),
             norm(font[1][x][1]),
             norm(font[1][x][2]),
@@ -65,7 +64,7 @@ for(var i = 0; i < data.length; i++){
     }
 }
 
-var outbuf = new Buffer(offset);
+const outbuf = new Buffer(offset);
 buf.copy(outbuf, 0, 0, offset);
 
 console.log("CODE_POINT_MAX: " + codemax);

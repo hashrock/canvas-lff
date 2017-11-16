@@ -1,37 +1,37 @@
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
 import * as example from "./example"
-import {clear, drawChar, drawString} from "./draw"
+import { clear, drawChar, drawString } from "./draw"
 export default {
-  data(){
+  data() {
     return {
     }
   },
   async mounted() {
-    var c = <HTMLCanvasElement>document.getElementById("canvas");
-    var ctx = <CanvasRenderingContext2D>c.getContext("2d");
-    var w = c.offsetWidth;
-    var h = c.offsetHeight;
+    const c = <HTMLCanvasElement>document.getElementById("canvas");
+    const ctx = <CanvasRenderingContext2D>c.getContext("2d");
+    const w = c.offsetWidth;
+    const h = c.offsetHeight;
 
     function rgba(r: number, g: number, b: number, a: number) {
       return "rgba(" + r + ", " + g + ", " + b + "," + a + ")";
     }
 
-    var fontdata: parser.Font[];
-    var round = 0;
-    var count = 0;
+    let fontdata: parser.Font[] = [];
+    let round = 0;
+    let count = 0;
     function update() {
       round += 0.01;
       count += 1;
       clear(ctx, w, h);
       if (fontdata) {
-        var left = 20;
-        var top = 20;
+        const left = 20;
+        const top = 20;
 
-        var customRenderer = example.custom1;
+        const customRenderer = example.custom1;
 
-        var customRenderer2 = example.custom2
-        var size = 80;
+        const customRenderer2 = example.custom2
+        const size = 80;
 
         drawString(ctx, round, count, left, top, size, fontdata, "あいうえお", {
           lineRenderer: customRenderer
@@ -44,14 +44,14 @@ export default {
         });
       }
 
-      window.requestAnimationFrame( ()=> {
+      window.requestAnimationFrame(() => {
         update();
       });
     }
     const response = await fetch("kst32b.lff");
     const text = await response.text()
     fontdata = parser.parseLines(text.split("\n"));
-    update();  
+    update();
   }
 };
 

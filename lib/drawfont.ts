@@ -1,7 +1,7 @@
 import * as request from "superagent";
-import * as parser from "./lib/lff/parser";
-import { Line } from "./lib/lff/parser";
-import * as example from "./example"
+import * as parser from "./lff/parser";
+import { Line } from "./lff/parser";
+
 class LffOption {
   lineRenderer: (ctx: CanvasRenderingContext2D, round: number, count: number, x0: number, y0: number, x1: number, y1: number, index: number) => void;
 }

@@ -1,12 +1,8 @@
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
 import * as example from "./example"
-import { clear, drawChar, drawString } from "./draw"
+import { clear, drawChar, drawString } from "./lib/drawfont"
 export default {
-  data() {
-    return {
-    }
-  },
   async mounted() {
     const c = <HTMLCanvasElement>document.getElementById("canvas");
     const ctx = <CanvasRenderingContext2D>c.getContext("2d");

@@ -1,16 +1,29 @@
 import * as lff from "./line";
 
-function parseLines(lines) {
-    const fonts: any[] = [];
-    let info: any[] = [];
+export interface Line{
+    x1: number
+    y1: number
+    x2: number
+    y2: number
+}
+
+export interface Font{
+    letter: string
+    info: Line[]
+}
+
+export function parseLines(lines: string[]) {
+    const fonts: Font[] = [];
+    let info: Line[] = [];
     let letter = "";
     lines.forEach(item => {
         if (item === "") {
             if (letter !== "") {
-                fonts.push([
-                    letter,
-                    info
-                ]);
+                const font: Font = {
+                    letter: letter,
+                    info: info
+                }
+                fonts.push(font)
                 info = [];
                 letter = "";
             }
@@ -21,12 +34,16 @@ function parseLines(lines) {
             }
             const resultLine = lff.line(item);
             if (resultLine) {
-                info.push(resultLine);
+                const line: Line = {
+                    x1: parseFloat(resultLine[0]),
+                    y1: parseFloat(resultLine[1]),
+                    x2: parseFloat(resultLine[2]),
+                    y2: parseFloat(resultLine[3]),
+                }
+                info.push(line);
             }
         }
     })
 
     return fonts;
 }
-
-export default parseLines;

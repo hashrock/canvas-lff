@@ -1,4 +1,3 @@
-import * as request from "superagent";
 import * as parser from "./lff/parser";
 import { Line } from "./lff/parser";
 

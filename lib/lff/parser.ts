@@ -33,7 +33,7 @@ export function parseLines(lines: string[]) {
                 letter = resultChar;
             }
             const resultLine = lff.line(item);
-            if (resultLine) {
+            if (resultLine.length === 4) {
                 const line: Line = {
                     x1: parseFloat(resultLine[0]),
                     y1: parseFloat(resultLine[1]),

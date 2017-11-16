@@ -5,8 +5,8 @@ import { Line } from "./lff/parser";
 class LffOption {
   lineRenderer: (ctx: CanvasRenderingContext2D, round: number, count: number, x0: number, y0: number, x1: number, y1: number, index: number) => void;
 }
-export function aline(ctx: CanvasRenderingContext2D, round: number, count: number, x: number, y: number, x1: number, y1: number, x2: number, y2: number, scale: number, option: LffOption, index: number) {
-  line(
+export function strokeScaledLine(ctx: CanvasRenderingContext2D, round: number, count: number, x: number, y: number, x1: number, y1: number, x2: number, y2: number, scale: number, option: LffOption, index: number) {
+  strokeLine(
     ctx,
     round,
     count,
@@ -19,7 +19,7 @@ export function aline(ctx: CanvasRenderingContext2D, round: number, count: numbe
   );
 }
 
-export function line(ctx: CanvasRenderingContext2D, round: number, count: number, x1: number, y1: number, x2: number, y2: number, option: LffOption, index: number) {
+export function strokeLine(ctx: CanvasRenderingContext2D, round: number, count: number, x1: number, y1: number, x2: number, y2: number, option: LffOption, index: number) {
   if (option.lineRenderer) {
     option.lineRenderer(ctx, round, count, x1, y1, x2, y2, index);
   } else {
@@ -30,7 +30,7 @@ export function line(ctx: CanvasRenderingContext2D, round: number, count: number
   }
 }
 
-export function drawChar(ctx: CanvasRenderingContext2D, round:number, count:number, x: number, y: number, size: number, fontdata: parser.Font[], str: string, option: LffOption) {
+export function strokeChar(ctx: CanvasRenderingContext2D, round:number, count:number, x: number, y: number, size: number, fontdata: parser.Font[], str: string, option: LffOption) {
   let font;
   for (let i = 0; i < fontdata.length; i++) {
     if (fontdata[i].letter === str) {
@@ -42,7 +42,7 @@ export function drawChar(ctx: CanvasRenderingContext2D, round:number, count:numb
   if (font) {
     ctx.lineWidth = 0.5;
     font.info.forEach((stroke: parser.Line, index: number) => {
-      aline(
+      strokeScaledLine(
         ctx,
         round,
         count,
@@ -68,7 +68,7 @@ export function drawString(ctx: CanvasRenderingContext2D, round: number, count: 
   let offset = 0;
   for (let i = 0; i < str.length; i++) {
     const ch = str[i];
-    drawChar(ctx, round, count, x + offset, y, ratio, fontdata, ch, option);
+    strokeChar(ctx, round, count, x + offset, y, ratio, fontdata, ch, option);
     if (str.match(/^(\w| |'|,|&)+$/)) {
       offset += ratio * 5;
     } else {

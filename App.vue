@@ -22,7 +22,7 @@ body {
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
 import * as example from "./example";
-import { clear, drawChar, drawString } from "./lib/drawfont";
+import { clear, drawString } from "./lib/drawfont";
 export default {
   async mounted() {
     const c = <HTMLCanvasElement>document.getElementById("canvas");

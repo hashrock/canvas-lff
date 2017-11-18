@@ -1,7 +1,7 @@
 <template>
   <main>
     <svg width=500 height=500 id="canvas">
-      <line-font-string :str="str" :fontdata="fontdata"></line-font-string>
+      <line-font-string v-for="(line, index) in lines" :key="index" :str="line" :fontdata="fontdata" :x="0" :y="index * 80"></line-font-string>
     </svg>
     <p v-if="loading">Loading Fonts...</p>
     <textarea v-model="str" cols="30" rows="10"></textarea>
@@ -26,6 +26,10 @@ main {
   display: flex;
   flex-direction: column;
 }
+textarea{
+  background: black;
+  color: white;
+}
 </style>
 
 <script lang="ts">
@@ -40,7 +44,7 @@ export default Vue.extend({
     return {
       fontdata: {}, //Map<string, parser.Font> or { [key: string]: T; };
       loading: true,
-      str: "テストだよ～"
+      str: "テストだよ\n全員集合"
     };
   },
   async mounted() {
@@ -54,6 +58,11 @@ export default Vue.extend({
     }, {});
 
     this.loading = false;
+  },
+  computed:{
+    lines(): string[]{
+      return this.str.split("\n")
+    }
   },
   methods: {},
   components: {

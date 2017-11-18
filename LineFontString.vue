@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g :transform="groupPosition">
     <line-font-char v-for="(char, index) in strAry" :key="index" :fontdata="fontdata" :text="char" :x="index * 80" :y="0"></line-font-char>
   </g>
 </template>
@@ -12,8 +12,10 @@ import * as parser from "./lib/lff/parser";
 export default Vue.extend({
   props: {
     str: String,
-    fontdata: Object
-},
+    fontdata: Object,
+    x: Number,
+    y: Number
+  },
   computed: {
     strAry() {
       let strAry: string[] = [];
@@ -21,6 +23,9 @@ export default Vue.extend({
         strAry.push(this.str.charAt(i));
       }
       return strAry;
+    },
+    groupPosition(): string {
+      return `translate(${this.x}, ${this.y})`;
     }
   },
   components: {

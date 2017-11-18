@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "poi index.ts",
     "build": "poi build index.ts",
-    "deploy": ""
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",

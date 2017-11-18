@@ -14,7 +14,7 @@ import * as anime from 'animejs'
 
 export default Vue.extend({
   props: {
-    font: Array,
+    font: Object,
     text: String,
     x: Number,
     y: Number
@@ -34,20 +34,10 @@ export default Vue.extend({
       }
     },
     lines() {
-      let cfont;
       const p = path.path();
-
-      //find
-      for (let i = 0; i < this.font.length; i++) {
-        if (this.font[i].letter === this.text) {
-          cfont = this.font[i];
-          break;
-        }
-      }
-      
-      if (cfont) {
+      if (this.font) {
         let prestroke = {x1:-1, y1: -1 ,x2: -1 ,y2: -1}
-        cfont.info.forEach((stroke: parser.Line, index: number) => {
+        this.font.info.forEach((stroke: parser.Line, index: number) => {
           if(index === 0){
             p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100) 
           }

@@ -16,13 +16,13 @@ body {
   justify-content: center;
   height: 100vh;
 }
-svg{
+svg {
   background: black;
 }
-line{
+line {
   stroke: black;
 }
-main{
+main {
   display: flex;
   flex-direction: column;
 }
@@ -32,26 +32,30 @@ main{
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
 import { clear, drawString } from "./lib/drawfont";
-import LineFontString from "./LineFontString.vue"
-import Vue from "vue"
+import LineFontString from "./LineFontString.vue";
+import Vue from "vue";
 
 export default Vue.extend({
-  data(){
+  data() {
     return {
-      fontdata: <parser.Font[]>[],
+      fontdata: {}, //Map<string, parser.Font> or { [key: string]: T; };
       loading: true,
       str: "テストだよ～"
-    }
+    };
   },
   async mounted() {
     const response = await fetch("kst32b.lff");
     const text = await response.text();
-    this.fontdata = parser.parseLines(text.split("\n"));
-    this.loading = false
-  },
-  methods: {
 
+    const fontArray = parser.parseLines(text.split("\n"));
+    this.fontdata = fontArray.reduce(function(map: any, obj) {
+      map[obj.letter] = obj;
+      return map;
+    }, {});
+
+    this.loading = false;
   },
+  methods: {},
   components: {
     LineFontString
   }

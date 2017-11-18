@@ -14,7 +14,7 @@ import * as anime from "animejs";
 
 export default Vue.extend({
   props: {
-    fontdata: Array,
+    fontdata: Object,
     text: String,
     x: Number,
     y: Number
@@ -59,21 +59,24 @@ export default Vue.extend({
           info: []
         };
       }
-
-      let cfont;
-
-      //find
-      for (let i = 0; i < this.fontdata.length; i++) {
-        if (this.fontdata[i].letter === this.text) {
-          cfont = this.fontdata[i];
-          break;
-        }
-      }
-      return cfont;
-    }
+      return this.fontdata[this.text];
+    },
   },
   watch: {
     fontdata() {
+      this.setAnimation()
+    }
+  },
+  mounted() {
+      this.setAnimation()
+    /*
+    setInterval(()=>{
+      this.t += 0.001
+    }, 10)
+    */
+  },
+  methods:{
+    setAnimation(): void{
       var lineDrawing = anime({
         targets: this.$el.querySelectorAll("path"),
         strokeDashoffset: [2000, 0],
@@ -85,14 +88,8 @@ export default Vue.extend({
           return index * 100;
         }
       });
+
     }
-  },
-  mounted() {
-    /*
-    setInterval(()=>{
-      this.t += 0.001
-    }, 10)
-    */
   }
 });
 </script>

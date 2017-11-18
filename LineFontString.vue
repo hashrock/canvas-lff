@@ -12,8 +12,8 @@ import * as parser from "./lib/lff/parser";
 export default Vue.extend({
   props: {
     str: String,
-    fontdata: Array
-  },
+    fontdata: Object
+},
   computed: {
     strAry() {
       let strAry: string[] = [];

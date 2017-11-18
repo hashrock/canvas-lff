@@ -15,6 +15,7 @@ import * as anime from "animejs";
 export default Vue.extend({
   props: {
     fontdata: Object,
+    fontSize: Number,
     text: String,
     x: Number,
     y: Number
@@ -37,15 +38,25 @@ export default Vue.extend({
       const p = path.path();
       if (this.font) {
         let prestroke = { x1: -1, y1: -1, x2: -1, y2: -1 };
+        const fontSize = this.fontSize / 10;
         this.font.info.forEach((stroke: parser.Line, index: number) => {
           if (index === 0) {
-            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100);
+            p.moveTo(
+              stroke.x1 * fontSize,
+              stroke.y1 * -1 * fontSize + fontSize * 10
+            );
           }
           if (stroke.x1 === prestroke.x2 && stroke.y1 === prestroke.y2) {
           } else {
-            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100);
+            p.moveTo(
+              stroke.x1 * fontSize,
+              stroke.y1 * -1 * fontSize + fontSize * 10
+            );
           }
-          p.lineTo(stroke.x2 * 10, stroke.y2 * -10 + 100);
+          p.lineTo(
+            stroke.x2 * fontSize,
+            stroke.y2 * -1 * fontSize + fontSize * 10
+          );
           prestroke = stroke;
         });
       }
@@ -60,35 +71,29 @@ export default Vue.extend({
         };
       }
       return this.fontdata[this.text];
-    },
+    }
   },
   watch: {
     fontdata() {
-      this.setAnimation()
+      this.setAnimation();
     }
   },
   mounted() {
-      this.setAnimation()
-    /*
-    setInterval(()=>{
-      this.t += 0.001
-    }, 10)
-    */
+    this.setAnimation();
   },
-  methods:{
-    setAnimation(): void{
+  methods: {
+    setAnimation(): void {
       var lineDrawing = anime({
         targets: this.$el.querySelectorAll("path"),
         strokeDashoffset: [2000, 0],
         easing: "easeInOutSine",
-        duration: 8000,
+        duration: 6000,
         loop: true,
         delay: function(target, index) {
           // 100ms delay multiplied by every div index, in ascending order
           return index * 100;
         }
       });
-
     }
   }
 });
@@ -99,7 +104,6 @@ path {
   stroke-dasharray: 2000;
   stroke-dashoffset: 1990;
   fill: none;
-  stroke-width: 8;
 }
 </style>
 

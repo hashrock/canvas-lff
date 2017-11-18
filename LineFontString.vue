@@ -1,6 +1,6 @@
 <template>
   <g :transform="groupPosition">
-    <line-font-char v-for="(char, index) in strAry" :key="index" :fontdata="fontdata" :text="char" :x="index * 80" :y="0"></line-font-char>
+    <line-font-char v-for="(char, index) in strAry" :key="index" :fontdata="fontdata" :text="char" :x="index * (fontSize - kerning)" :y="0" :font-size="fontSize"></line-font-char>
   </g>
 </template>
 
@@ -13,8 +13,10 @@ export default Vue.extend({
   props: {
     str: String,
     fontdata: Object,
+    fontSize: Number,
     x: Number,
-    y: Number
+    y: Number,
+    kerning: Number
   },
   computed: {
     strAry() {

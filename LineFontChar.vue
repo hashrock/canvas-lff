@@ -10,80 +10,94 @@ import Vue from "vue";
 import * as path from "d3-path";
 import * as parser from "./lib/lff/parser";
 import { Line } from "./lib/lff/parser";
-import * as anime from 'animejs'
+import * as anime from "animejs";
 
 export default Vue.extend({
   props: {
-    font: Object,
+    fontdata: Array,
     text: String,
     x: Number,
     y: Number
   },
-  data(){
+  data() {
     return {
       t: 0
-    }
+    };
   },
   computed: {
-    transform(): string{
-      return `translate(${this.x}, ${this.y})`
+    transform(): string {
+      return `translate(${this.x}, ${this.y})`;
     },
-    styleObj(): any{
+    styleObj(): any {
       return {
         strokeDashoffset: 2000 - 2000 * this.t
-      }
+      };
     },
     lines() {
       const p = path.path();
       if (this.font) {
-        let prestroke = {x1:-1, y1: -1 ,x2: -1 ,y2: -1}
+        let prestroke = { x1: -1, y1: -1, x2: -1, y2: -1 };
         this.font.info.forEach((stroke: parser.Line, index: number) => {
-          if(index === 0){
-            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100) 
+          if (index === 0) {
+            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100);
           }
-          if(stroke.x1 === prestroke.x2 && stroke.y1 === prestroke.y2)
-          {
-          }else{
-            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100) 
+          if (stroke.x1 === prestroke.x2 && stroke.y1 === prestroke.y2) {
+          } else {
+            p.moveTo(stroke.x1 * 10, stroke.y1 * -10 + 100);
           }
-          p.lineTo(stroke.x2 * 10, stroke.y2 * -10 + 100)
-          prestroke = stroke
+          p.lineTo(stroke.x2 * 10, stroke.y2 * -10 + 100);
+          prestroke = stroke;
         });
       }
 
-      return p.toString()
+      return p.toString();
+    },
+    font(): parser.Font {
+      if (!this.fontdata) {
+        return {
+          letter: "",
+          info: []
+        };
+      }
+
+      let cfont;
+
+      //find
+      for (let i = 0; i < this.fontdata.length; i++) {
+        if (this.fontdata[i].letter === this.text) {
+          cfont = this.fontdata[i];
+          break;
+        }
+      }
+      return cfont;
     }
   },
   watch: {
-    font(){
-      console.log("set font")
+    fontdata() {
       var lineDrawing = anime({
-        targets: 'path',
+        targets: this.$el.querySelectorAll("path"),
         strokeDashoffset: [2000, 0],
-        easing: 'easeInOutSine',
+        easing: "easeInOutSine",
         duration: 8000,
         loop: true,
         delay: function(target, index) {
           // 100ms delay multiplied by every div index, in ascending order
           return index * 100;
-        },        
+        }
       });
-
     }
   },
-  mounted(){
+  mounted() {
     /*
     setInterval(()=>{
       this.t += 0.001
     }, 10)
     */
-
-
   }
 });
 </script>
 <style>
-path{
+path {
   stroke: black;
   stroke-dasharray: 2000;
   stroke-dashoffset: 1990;
